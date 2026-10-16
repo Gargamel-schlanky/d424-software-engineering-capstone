@@ -1,0 +1,65 @@
+<div class="scene" id="welcome">
+  <article class="content">
+
+    <div class="row">
+      <div class="col-12">
+        <h1>Intake Form:</h1>
+        <form class="form-horizontal" [formGroup]="animalIntake" (ngSubmit)="onSubmit(animalIntake)">
+
+          <div class="form-group">
+            <label for="intake" class="col-4">Animal Intake Date:</label>
+            <div class="col-12">
+              <input id="intake" type="date" class="form-control" formControlName="intake">
+            </div>
+          </div>
+
+          <div class="form-group mt-3">
+            <div class="col-offset-2 col-12">
+              <button type="submit" class="btn btn-primary btn-lg">Submit Intake</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <h1 class="mt-4">Available Intakes</h1>
+
+    <div class="row" *ngIf="intakes && intakes.length > 0; else noIntakes">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Intake ID</th>
+                <th>Date</th>
+                <th>Animal Name</th>
+                <th>Staff Member</th>
+                <th>Needs Medical</th>
+                <th>Type</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let intake of intakes">
+                <td><strong>{{intake.id}}</strong></td>
+                <td>{{intake.intake_date}}</td>
+                <td><span *ngIf="intake.animal">{{intake.animal.name}} (Age: {{intake.animal.age}})</span></td>
+                <td><span *ngIf="intake.intake_staff_member">{{intake.intake_staff_member.name}}</span></td>
+                <td>{{intake.needs_medical ? 'Yes' : 'No'}}</td>
+                <td>{{intake.TYPE}}</td>
+                <td>
+                  <button type="button" class="btn btn-primary btn-sm" (click)="submitIntake(intake.id)">Save Intake</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noIntakes>
+      <p class="mt-3 text-muted">No intake records found.</p>
+    </ng-template>
+
+  </article>
+</div>
