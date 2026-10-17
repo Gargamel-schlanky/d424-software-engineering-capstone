@@ -1,0 +1,83 @@
+<div class="scene" id="reportsView">
+  <article class="content">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>Application Summary Reports</h1>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-primary" (click)="exportIntakeCSV()">Export Intakes (CSV)</button>
+        <button class="btn btn-outline-success" (click)="exportAnimalsCSV()">Export Animals (CSV)</button>
+        <button class="btn btn-outline-secondary" (click)="printReport()">Print Report</button>
+      </div>
+    </div>
+
+    <!-- Summary Metrics Cards -->
+    <div class="row mb-4">
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card text-center bg-light border-primary h-100 p-3">
+          <h3>Intakes</h3>
+          <h2 class="text-primary">{{totalIntakes}}</h2>
+          <p class="text-muted mb-0">Needs Medical: {{medicalNeedsCount}}</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card text-center bg-light border-success h-100 p-3">
+          <h3>Animals</h3>
+          <h2 class="text-success">{{totalAnimals}}</h2>
+          <p class="text-muted mb-0">Adoptable: {{adoptableCount}} | Residents: {{residentsCount}}</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card text-center bg-light border-info h-100 p-3">
+          <h3>Staff Directory</h3>
+          <h2 class="text-info">{{totalStaff}}</h2>
+          <p class="text-muted mb-0">On-Call Duty: {{onCallStaffCount}}</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card text-center bg-light border-warning h-100 p-3">
+          <h3>Medical Visits</h3>
+          <h2 class="text-warning">{{totalMedical}}</h2>
+          <p class="text-muted mb-0">With Restrictions: {{restrictionsCount}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Section Reports -->
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-header bg-primary text-white">
+            <h4 class="card-title mb-0">Recent Intakes Summary</h4>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li *ngFor="let intake of intakes.slice(0, 5)" class="list-group-item d-flex justify-content-between align-items-center">
+                <span>Intake #{{intake.id}} ({{intake.TYPE}})</span>
+                <span class="badge bg-secondary">{{intake.intake_date | date:'yyyy-MM-dd'}}</span>
+              </li>
+            </ul>
+            <p *ngIf="intakes.length === 0" class="text-muted">No intake records available.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-header bg-success text-white">
+            <h4 class="card-title mb-0">Active Resident Animals</h4>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li *ngFor="let animal of animals.slice(0, 5)" class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{animal.name}} ({{animal.age}})</span>
+                <span class="badge bg-success" *ngIf="animal.adoptable">Adoptable</span>
+              </li>
+            </ul>
+            <p *ngIf="animals.length === 0" class="text-muted">No animal records available.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </article>
+</div>

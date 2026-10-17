@@ -1,74 +1,12 @@
-<div class="scene" id="intakeFormView">
+<div class="scene" id="intakeView">
   <article class="content">
 
-    <div class="row">
-      <div class="col-12">
-        <h1>{{ isEditMode ? 'Edit Intake Record' : 'New Animal Intake' }}</h1>
-        <form class="form-horizontal" [formGroup]="animalIntake" (ngSubmit)="onSubmit()">
-
-          <!-- 1. Intake Date -->
-          <div class="form-group mb-3">
-            <label for="intake_date" class="form-label">Intake Date:</label>
-            <input id="intake_date" type="date" class="form-control" formControlName="intake_date" required>
-          </div>
-
-          <!-- 2. Animal Type -->
-          <div class="form-group mb-3">
-            <label for="TYPE" class="form-label">Animal Type:</label>
-            <select id="TYPE" class="form-select" formControlName="TYPE">
-              <option value="DOG">DOG</option>
-              <option value="CAT">CAT</option>
-              <option value="OTHER">OTHER</option>
-              <option value="WILD_REHAB">WILD_REHAB</option>
-              <option value="UNKNOWN">UNKNOWN</option>
-            </select>
-          </div>
-
-          <!-- 3. Needs Medical -->
-          <div class="form-group mb-3">
-            <label for="needs_medical" class="form-label">Needs Medical Care?</label>
-            <select id="needs_medical" class="form-select" formControlName="needs_medical">
-              <option [ngValue]="false">No</option>
-              <option [ngValue]="true">Yes</option>
-            </select>
-          </div>
-
-          <!-- 4. Animal Selection (Optional) -->
-          <div class="form-group mb-3">
-            <label for="animal_id" class="form-label">Select Animal (Optional):</label>
-            <select id="animal_id" class="form-select" formControlName="animal_id">
-              <option value="">-- None / Select Animal (Optional) --</option>
-              <option *ngFor="let anim of animals" [value]="anim.id">
-                ID: {{anim.id}} - {{anim.name || 'Unnamed Animal'}} ({{anim.age || 'Age Unknown'}})
-              </option>
-            </select>
-          </div>
-
-          <!-- 5. Staff Member Selection -->
-          <div class="form-group mb-3">
-            <label for="staff_id" class="form-label">Intake Staff Member (Optional):</label>
-            <select id="staff_id" class="form-select" formControlName="staff_id">
-              <option value="">-- None / Select Staff Member (Optional) --</option>
-              <option *ngFor="let st of staffList" [value]="st.id">
-                ID: {{st.id}} - {{st.name}} ({{st.position || 'Staff'}})
-              </option>
-            </select>
-          </div>
-
-          <div class="form-group mt-4 d-flex gap-2">
-            <button type="submit" class="btn btn-primary btn-lg" [disabled]="!animalIntake.valid">
-              {{ isEditMode ? 'Update Intake Record' : 'Submit Intake Record' }}
-            </button>
-            <button type="button" *ngIf="isEditMode" class="btn btn-secondary btn-lg" (click)="cancelEdit()">Cancel Edit</button>
-          </div>
-        </form>
-      </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>Intake Records</h1>
+      <a routerLink="/intake/form" class="btn btn-primary btn-lg">+ New Animal Intake</a>
     </div>
 
-    <!-- Intakes Table -->
-    <h1 class="mt-5">Intake Records</h1>
-
-    <div class="row" *ngIf="intakes && intakes.length > 0; else noIntakes">
+    <div class="row" *ngIf="filteredIntakes && filteredIntakes.length > 0; else noIntakes">
       <div class="col-12">
         <div class="table-responsive">
           <table class="table table-striped align-middle">
@@ -84,7 +22,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let intake of intakes">
+              <tr *ngFor="let intake of filteredIntakes">
                 <td><strong>{{intake.id}}</strong></td>
                 <td>{{intake.intake_date | date:'yyyy-MM-dd'}}</td>
                 <td><span class="badge bg-info text-dark">{{intake.TYPE}}</span></td>
@@ -101,7 +39,7 @@
                   <span *ngIf="!intake.intake_staff_member" class="text-muted">N/A</span>
                 </td>
                 <td>
-                  <button type="button" class="btn btn-outline-primary btn-sm me-1" (click)="onEditIntake(intake)">Edit</button>
+                  <a [routerLink]="['/intake/form', intake.id]" class="btn btn-outline-primary btn-sm me-1">Edit</a>
                   <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteIntake(intake.id)">Delete</button>
                 </td>
               </tr>
@@ -112,7 +50,7 @@
     </div>
 
     <ng-template #noIntakes>
-      <p class="mt-3 text-muted">No intake records found.</p>
+      <p class="mt-3 text-muted">No intake records found matching search.</p>
     </ng-template>
 
   </article>

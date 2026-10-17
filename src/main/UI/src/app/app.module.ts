@@ -7,19 +7,27 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IntakeComponent } from './components/intake/intake.component';
+import { IntakeFormComponent } from './components/intake-form/intake-form.component';
 import { AnimalsComponent } from './components/animals/animals.component';
+import { AnimalFormComponent } from './components/animal-form/animal-form.component';
 import { MedicalComponent } from './components/medical/medical.component';
+import { MedicalFormComponent } from './components/medical-form/medical-form.component';
 import { StaffComponent } from './components/staff/staff.component';
 import { StaffFormComponent } from './components/staff-form/staff-form.component';
+import { ReportsComponent } from './components/reports/reports.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     IntakeComponent,
+    IntakeFormComponent,
     AnimalsComponent,
+    AnimalFormComponent,
     MedicalComponent,
+    MedicalFormComponent,
     StaffComponent,
-    StaffFormComponent
+    StaffFormComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,

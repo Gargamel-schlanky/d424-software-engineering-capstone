@@ -7,14 +7,17 @@ import java.util.Date;
 
 @Entity
 @Table(name = "medical")
-public class Medical {
+public class Medical extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     @Column(name = "vet")
     private String vet;
+
     @Column(name ="notes")
     private String notes;
+
     @Column(name = " has_restrictions")
     private Boolean has_restrictions;
 
@@ -29,6 +32,12 @@ public class Medical {
     private Date next_apt;
 
     public Medical (){};
+
+    // Polymorphism: Method overriding
+    @Override
+    public String getDisplaySummary() {
+        return "Medical Visit with " + vet;
+    }
 
     public int getId() {
         return id;

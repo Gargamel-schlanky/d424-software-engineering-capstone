@@ -1,0 +1,49 @@
+<div class="scene" id="medicalFormView">
+  <article class="content">
+
+    <div class="row">
+      <div class="col-12 col-md-8 offset-md-2">
+        <h1>{{ isEditMode ? 'Edit Medical Visit Record' : 'Add a Medical Visit' }}</h1>
+        <form class="form-horizontal" [formGroup]="addMedicalForm" (ngSubmit)="onSubmit()">
+
+          <div class="form-group mb-3">
+            <label for="vet" class="form-label">Veterinarian / Provider Name:</label>
+            <input id="vet" type="text" class="form-control" formControlName="vet" placeholder="e.g. Dr. Smith / City Vet Clinic" required>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="notes" class="form-label">Notes:</label>
+            <input id="notes" type="text" class="form-control" formControlName="notes" placeholder="Medical notes or special instructions">
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="has_restrictions" class="form-label">Has Restrictions?</label>
+            <select id="has_restrictions" class="form-select" formControlName="has_restrictions">
+              <option [ngValue]="false">No</option>
+              <option [ngValue]="true">Yes</option>
+            </select>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="last_apt" class="form-label">Last Appointment Date:</label>
+            <input id="last_apt" type="date" class="form-control" formControlName="last_apt">
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="next_apt" class="form-label">Next Appointment Date:</label>
+            <input id="next_apt" type="date" class="form-control" formControlName="next_apt">
+          </div>
+
+          <div class="form-group mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary btn-lg" [disabled]="!addMedicalForm.valid">
+              {{ isEditMode ? 'Update Medical Visit' : 'Save Medical Visit' }}
+            </button>
+            <button type="button" class="btn btn-secondary btn-lg" (click)="onCancel()">Cancel</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </article>
+</div>

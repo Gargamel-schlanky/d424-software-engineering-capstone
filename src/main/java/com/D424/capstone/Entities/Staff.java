@@ -3,20 +3,26 @@ package com.D424.capstone.Entities;
 import jakarta.persistence.*;
 
 import java.util.Date;
+
 @Entity
 @Table(name = "staff")
-public class Staff {
+public class Staff extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "phone_number")
     private String phone;
+
     @Column(name = "job_title")
     private String position;
+
     @Column(name = "hire_date")
     private Date hire_date;
+
     @Column(name = "on_call")
     private Boolean on_call_duty;
 
@@ -25,6 +31,12 @@ public class Staff {
     public Staff(String name, Date hire_date) {
         this.name = name;
         this.hire_date = hire_date;
+    }
+
+    // Polymorphism: Method overriding
+    @Override
+    public String getDisplaySummary() {
+        return "Staff Member: " + name + " (" + position + ")";
     }
 
     public int getId() {

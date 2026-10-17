@@ -1,40 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, Subscription } from 'rxjs';
 import { Medical } from '../../models';
+import { SearchService } from '../../services/search.service';
 
 @Component({
   selector: 'app-medical',
   templateUrl: './medical.component.html',
   styleUrls: ['../../app.component.css']
 })
-export class MedicalComponent implements OnInit {
+export class MedicalComponent implements OnInit, OnDestroy {
 
   private baseURL: string = 'http://localhost:8080';
   private medicalUrl: string = this.baseURL + '/medical';
 
-  addMedicalForm!: FormGroup;
   medicals: Medical[] = [];
+  filteredMedicals: Medical[] = [];
+  searchSubscription?: Subscription;
 
-  isEditMode: boolean = false;
-  editingMedicalId?: number;
-
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private searchService: SearchService
+  ) {}
 
   ngOnInit() {
-    this.initForm();
     this.fetchMedicalRecords();
+
+    this.searchSubscription = this.searchService.searchQuery$.subscribe(query => {
+      this.applyFilter(query);
+    });
   }
 
-  initForm() {
-    this.addMedicalForm = new FormGroup({
-      vet: new FormControl('', Validators.required),
-      notes: new FormControl(''),
-      has_restrictions: new FormControl(false),
-      last_apt: new FormControl(''),
-      next_apt: new FormControl('')
-    });
+  ngOnDestroy() {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
   }
 
   fetchMedicalRecords() {
@@ -42,60 +42,27 @@ export class MedicalComponent implements OnInit {
       res => {
         if (res) {
           this.medicals = Array.isArray(res) ? res : (Object.values(res)[0] as Medical[]) || [];
+          this.applyFilter(this.searchService.currentQuery);
         }
       },
       err => console.log('Error fetching medical records', err)
     );
   }
 
-  onSaveMedical() {
-    if (!this.addMedicalForm.valid) return;
-
-    const formVal = this.addMedicalForm.value;
-    const medicalData: Medical = {
-      id: this.editingMedicalId,
-      vet: formVal.vet,
-      notes: formVal.notes,
-      has_restrictions: formVal.has_restrictions === true || formVal.has_restrictions === 'true',
-      last_apt: formVal.last_apt || undefined,
-      next_apt: formVal.next_apt || undefined
-    };
-
-    const options = {
-      headers: new HttpHeaders().append('Content-Type', 'application/json')
-    };
-
-    if (this.isEditMode && this.editingMedicalId) {
-      this.httpClient.put<Medical>(`${this.medicalUrl}/${this.editingMedicalId}`, medicalData, options).subscribe(
-        res => {
-          console.log('Medical record updated:', res);
-          this.cancelEdit();
-          this.fetchMedicalRecords();
-        },
-        err => console.error('Error updating medical record', err)
-      );
+  applyFilter(query: string) {
+    const q = (query || '').toLowerCase().trim();
+    if (!q) {
+      this.filteredMedicals = [...this.medicals];
     } else {
-      this.httpClient.post<Medical>(this.medicalUrl, medicalData, options).subscribe(
-        res => {
-          console.log('Medical record added:', res);
-          this.cancelEdit();
-          this.fetchMedicalRecords();
-        },
-        err => console.error('Error adding medical record', err)
-      );
+      this.filteredMedicals = this.medicals.filter(m => {
+        const idMatch = String(m.id || '').toLowerCase().includes(q);
+        const vetMatch = String(m.vet || '').toLowerCase().includes(q);
+        const notesMatch = String(m.notes || '').toLowerCase().includes(q);
+        const lastAptMatch = String(m.last_apt || '').toLowerCase().includes(q);
+        const nextAptMatch = String(m.next_apt || '').toLowerCase().includes(q);
+        return idMatch || vetMatch || notesMatch || lastAptMatch || nextAptMatch;
+      });
     }
-  }
-
-  onEditMedical(med: Medical) {
-    this.isEditMode = true;
-    this.editingMedicalId = med.id;
-    this.addMedicalForm.patchValue({
-      vet: med.vet || '',
-      notes: med.notes || '',
-      has_restrictions: med.has_restrictions === true,
-      last_apt: med.last_apt || '',
-      next_apt: med.next_apt || ''
-    });
   }
 
   onDeleteMedical(id?: number) {
@@ -109,18 +76,6 @@ export class MedicalComponent implements OnInit {
         err => console.error('Error deleting medical record', err)
       );
     }
-  }
-
-  cancelEdit() {
-    this.isEditMode = false;
-    this.editingMedicalId = undefined;
-    this.addMedicalForm.reset({
-      vet: '',
-      notes: '',
-      has_restrictions: false,
-      last_apt: '',
-      next_apt: ''
-    });
   }
 
   getAll(): Observable<any> {

@@ -1,24 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Staff } from '../../models';
+import { SearchService } from '../../services/search.service';
 
 @Component({
   selector: 'app-staff',
   templateUrl: './staff.component.html',
   styleUrls: ['../../app.component.css']
 })
-export class StaffComponent implements OnInit {
+export class StaffComponent implements OnInit, OnDestroy {
 
   private baseURL: string = 'http://localhost:8080';
   private getUrl: string = this.baseURL + '/staff';
 
   staffMembers: Staff[] = [];
+  filteredStaff: Staff[] = [];
+  searchSubscription?: Subscription;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private searchService: SearchService
+  ) {}
 
   ngOnInit() {
     this.fetchStaff();
+
+    this.searchSubscription = this.searchService.searchQuery$.subscribe(query => {
+      this.applyFilter(query);
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
   }
 
   fetchStaff() {
@@ -26,10 +42,27 @@ export class StaffComponent implements OnInit {
       res => {
         if (res) {
           this.staffMembers = Array.isArray(res) ? res : (Object.values(res)[0] as Staff[]) || [];
+          this.applyFilter(this.searchService.currentQuery);
         }
       },
-      err => console.log(err)
+      err => console.log('Error fetching staff', err)
     );
+  }
+
+  applyFilter(query: string) {
+    const q = (query || '').toLowerCase().trim();
+    if (!q) {
+      this.filteredStaff = [...this.staffMembers];
+    } else {
+      this.filteredStaff = this.staffMembers.filter(s => {
+        const idMatch = String(s.id || '').toLowerCase().includes(q);
+        const nameMatch = String(s.name || '').toLowerCase().includes(q);
+        const phoneMatch = String(s.phone || '').toLowerCase().includes(q);
+        const positionMatch = String(s.position || '').toLowerCase().includes(q);
+        const hireDateMatch = String(s.hire_date || '').toLowerCase().includes(q);
+        return idMatch || nameMatch || phoneMatch || positionMatch || hireDateMatch;
+      });
+    }
   }
 
   onDeleteStaff(id?: number) {

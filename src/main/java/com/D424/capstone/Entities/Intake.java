@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "intake")
-public class Intake {
+public class Intake extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -40,6 +40,12 @@ public class Intake {
         this.intake_staff_member = intake_staff_member;
         this.needs_medical = needs_medical;
         this.TYPE = TYPE;
+    }
+
+    // Polymorphism: Method overriding
+    @Override
+    public String getDisplaySummary() {
+        return "Intake ID: " + id + " on " + intake_date;
     }
 
     public Long getId() {

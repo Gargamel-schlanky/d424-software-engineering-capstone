@@ -7,21 +7,27 @@ import java.util.List;
 
 @Entity
 @Table(name = "animal")
-public class Animal {
+public class Animal extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "age")
     private String age;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "medical_id")
     private int medical_id;
+
     @Column(name="adoptable")
     private Boolean adoptable;
+
     @Column(name = "current_resident")
     private Boolean current_resident;
 
@@ -38,8 +44,12 @@ public class Animal {
         this.age = age;
     }
 
-    public Animal() {
+    public Animal() {}
 
+    // Polymorphism: Method overriding
+    @Override
+    public String getDisplaySummary() {
+        return "Animal: " + name + " (ID: " + id + ")";
     }
 
     public Long getId() {

@@ -1,53 +1,12 @@
 <div class="scene" id="medicalView">
   <article class="content">
 
-    <div class="row mb-4">
-      <div class="col-12">
-        <h1>{{ isEditMode ? 'Edit Medical Visit Record' : 'Add a Medical Visit' }}</h1>
-        <form class="form-horizontal" [formGroup]="addMedicalForm" (ngSubmit)="onSaveMedical()">
-
-          <div class="form-group mb-3">
-            <label for="vet" class="form-label">Veterinarian / Provider Name:</label>
-            <input id="vet" type="text" class="form-control" formControlName="vet" placeholder="e.g. Dr. Smith / City Vet Clinic" required>
-          </div>
-
-          <div class="form-group mb-3">
-            <label for="notes" class="form-label">Notes:</label>
-            <input id="notes" type="text" class="form-control" formControlName="notes" placeholder="Medical notes or special instructions">
-          </div>
-
-          <div class="form-group mb-3">
-            <label for="has_restrictions" class="form-label">Has Restrictions?</label>
-            <select id="has_restrictions" class="form-select" formControlName="has_restrictions">
-              <option [ngValue]="false">No</option>
-              <option [ngValue]="true">Yes</option>
-            </select>
-          </div>
-
-          <div class="form-group mb-3">
-            <label for="last_apt" class="form-label">Last Appointment Date:</label>
-            <input id="last_apt" type="date" class="form-control" formControlName="last_apt">
-          </div>
-
-          <div class="form-group mb-3">
-            <label for="next_apt" class="form-label">Next Appointment Date:</label>
-            <input id="next_apt" type="date" class="form-control" formControlName="next_apt">
-          </div>
-
-          <div class="form-group mt-3 d-flex gap-2">
-            <button type="submit" class="btn btn-primary btn-lg" [disabled]="!addMedicalForm.valid">
-              {{ isEditMode ? 'Update Medical Visit' : 'Add a Medical Visit' }}
-            </button>
-            <button type="button" *ngIf="isEditMode" class="btn btn-secondary btn-lg" (click)="cancelEdit()">Cancel Edit</button>
-          </div>
-        </form>
-      </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>Medical Records</h1>
+      <a routerLink="/medical/form" class="btn btn-primary btn-lg">+ Add a Medical Visit</a>
     </div>
 
-    <!-- Medical Records Table -->
-    <h1>Medical Records</h1>
-
-    <div class="row" *ngIf="medicals && medicals.length > 0; else noMedical">
+    <div class="row" *ngIf="filteredMedicals && filteredMedicals.length > 0; else noMedical">
       <div class="col-12">
         <div class="table-responsive">
           <table class="table table-striped align-middle">
@@ -63,7 +22,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let med of medicals">
+              <tr *ngFor="let med of filteredMedicals">
                 <td><strong>{{med.id}}</strong></td>
                 <td>{{med.vet}}</td>
                 <td>{{med.notes}}</td>
@@ -71,7 +30,7 @@
                 <td>{{med.last_apt | date:'yyyy-MM-dd'}}</td>
                 <td>{{med.next_apt | date:'yyyy-MM-dd'}}</td>
                 <td>
-                  <button type="button" class="btn btn-outline-primary btn-sm me-1" (click)="onEditMedical(med)">Edit</button>
+                  <a [routerLink]="['/medical/form', med.id]" class="btn btn-outline-primary btn-sm me-1">Edit</a>
                   <button type="button" class="btn btn-outline-danger btn-sm" (click)="onDeleteMedical(med.id)">Delete</button>
                 </td>
               </tr>
@@ -82,7 +41,7 @@
     </div>
 
     <ng-template #noMedical>
-      <p class="mt-3 text-muted">No medical records found.</p>
+      <p class="mt-3 text-muted">No medical records found matching search.</p>
     </ng-template>
 
   </article>

@@ -6,7 +6,7 @@
       <a routerLink="/staff/form" class="btn btn-primary btn-lg">+ Add Staff Member</a>
     </div>
 
-    <div class="row" *ngIf="staffMembers && staffMembers.length > 0; else noStaff">
+    <div class="row" *ngIf="filteredStaff && filteredStaff.length > 0; else noStaff">
       <div class="col-12">
         <div class="table-responsive">
           <table class="table table-striped align-middle">
@@ -22,7 +22,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let member of staffMembers">
+              <tr *ngFor="let member of filteredStaff">
                 <td><strong>{{member.id}}</strong></td>
                 <td>{{member.name}}</td>
                 <td>{{member.phone}}</td>
@@ -41,7 +41,7 @@
     </div>
 
     <ng-template #noStaff>
-      <p class="mt-3 text-muted">No staff records found.</p>
+      <p class="mt-3 text-muted">No staff records found matching search.</p>
     </ng-template>
 
   </article>
