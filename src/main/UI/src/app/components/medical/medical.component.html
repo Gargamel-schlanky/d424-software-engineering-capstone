@@ -1,6 +1,47 @@
 <div class="scene" id="medicalView">
   <article class="content">
 
+    <div class="row mb-4">
+      <div class="col-12">
+        <h1>Add a Medical Provider</h1>
+        <form class="form-horizontal" [formGroup]="addMedicalForm" (ngSubmit)="onAddMedical()">
+
+          <div class="form-group mb-3">
+            <label for="vet" class="form-label">Veterinarian / Provider Name:</label>
+            <input id="vet" type="text" class="form-control" formControlName="vet" placeholder="e.g. Dr. Smith / City Vet Clinic" required>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="notes" class="form-label">Notes:</label>
+            <input id="notes" type="text" class="form-control" formControlName="notes" placeholder="Medical notes or special instructions">
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="has_restrictions" class="form-label">Has Restrictions?</label>
+            <select id="has_restrictions" class="form-select" formControlName="has_restrictions">
+              <option [ngValue]="false">No</option>
+              <option [ngValue]="true">Yes</option>
+            </select>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="last_apt" class="form-label">Last Appointment Date:</label>
+            <input id="last_apt" type="date" class="form-control" formControlName="last_apt">
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="next_apt" class="form-label">Next Appointment Date:</label>
+            <input id="next_apt" type="date" class="form-control" formControlName="next_apt">
+          </div>
+
+          <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary btn-lg" [disabled]="!addMedicalForm.valid">Add a Medical Provider</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Medical Records Table -->
     <h1>Medical Records</h1>
 
     <div class="row" *ngIf="medicals && medicals.length > 0; else noMedical">

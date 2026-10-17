@@ -10,6 +10,7 @@ import { IntakeComponent } from './components/intake/intake.component';
 import { AnimalsComponent } from './components/animals/animals.component';
 import { MedicalComponent } from './components/medical/medical.component';
 import { StaffComponent } from './components/staff/staff.component';
+import { StaffFormComponent } from './components/staff-form/staff-form.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { StaffComponent } from './components/staff/staff.component';
     IntakeComponent,
     AnimalsComponent,
     MedicalComponent,
-    StaffComponent
+    StaffComponent,
+    StaffFormComponent
   ],
   imports: [
     BrowserModule,

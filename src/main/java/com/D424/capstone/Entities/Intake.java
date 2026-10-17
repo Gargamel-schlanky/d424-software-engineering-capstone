@@ -28,7 +28,7 @@ public class Intake {
     public Animal_type TYPE;
 
     @ManyToOne
-    @JoinColumn(name = "animal_id", nullable = false) // Many intakes point back to one animal
+    @JoinColumn(name = "animal_id", nullable = true)
     private Animal animal;
 
     public Intake(){}

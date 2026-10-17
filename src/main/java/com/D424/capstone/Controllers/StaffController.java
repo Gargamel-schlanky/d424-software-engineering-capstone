@@ -22,8 +22,19 @@ public class StaffController {
         return staffRepository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public Staff getStaffById(@PathVariable int id) {
+        return staffRepository.findById(id).orElse(null);
+    }
+
     @PostMapping
     public Staff createStaff(@RequestBody Staff staff) {
+        return staffRepository.save(staff);
+    }
+
+    @PutMapping("/{id}")
+    public Staff updateStaff(@PathVariable int id, @RequestBody Staff staff) {
+        staff.setId(id);
         return staffRepository.save(staff);
     }
 }

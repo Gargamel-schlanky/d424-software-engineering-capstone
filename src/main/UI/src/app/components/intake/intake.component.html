@@ -33,11 +33,11 @@
             </select>
           </div>
 
-          <!-- 4. Animal Selection -->
+          <!-- 4. Animal Selection (Optional) -->
           <div class="form-group mb-3">
-            <label for="animal_id" class="form-label">Select Animal:</label>
+            <label for="animal_id" class="form-label">Select Animal (Optional):</label>
             <select id="animal_id" class="form-select" formControlName="animal_id">
-              <option value="">-- Select Animal --</option>
+              <option value="">-- None / Select Animal (Optional) --</option>
               <option *ngFor="let anim of animals" [value]="anim.id">
                 ID: {{anim.id}} - {{anim.name || 'Unnamed Animal'}} ({{anim.age || 'Age Unknown'}})
               </option>
@@ -46,9 +46,9 @@
 
           <!-- 5. Staff Member Selection -->
           <div class="form-group mb-3">
-            <label for="staff_id" class="form-label">Intake Staff Member:</label>
+            <label for="staff_id" class="form-label">Intake Staff Member (Optional):</label>
             <select id="staff_id" class="form-select" formControlName="staff_id">
-              <option value="">-- Select Staff Member --</option>
+              <option value="">-- None / Select Staff Member (Optional) --</option>
               <option *ngFor="let st of staffList" [value]="st.id">
                 ID: {{st.id}} - {{st.name}} ({{st.position || 'Staff'}})
               </option>

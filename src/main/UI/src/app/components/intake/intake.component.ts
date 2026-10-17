@@ -73,8 +73,8 @@ export class IntakeComponent implements OnInit {
   onSubmit() {
     const formVal = this.animalIntake.value;
 
-    const selectedAnimal = this.animals.find(a => a.id == formVal.animal_id) || (formVal.animal_id ? { id: Number(formVal.animal_id) } : undefined);
-    const selectedStaff = this.staffList.find(s => s.id == formVal.staff_id) || (formVal.staff_id ? { id: Number(formVal.staff_id) } : undefined);
+    const selectedAnimal = formVal.animal_id ? (this.animals.find(a => a.id == formVal.animal_id) || { id: Number(formVal.animal_id) }) : undefined;
+    const selectedStaff = formVal.staff_id ? (this.staffList.find(s => s.id == formVal.staff_id) || { id: Number(formVal.staff_id) }) : undefined;
 
     const newIntake: Intake = {
       intake_date: formVal.intake_date,

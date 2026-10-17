@@ -1,12 +1,15 @@
 <div class="scene" id="staffView">
   <article class="content">
 
-    <h1>Staff Directory</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>Staff Directory</h1>
+      <a routerLink="/staff/form" class="btn btn-primary btn-lg">+ Add Staff Member</a>
+    </div>
 
     <div class="row" *ngIf="staffMembers && staffMembers.length > 0; else noStaff">
       <div class="col-12">
         <div class="table-responsive">
-          <table class="table table-striped">
+          <table class="table table-striped align-middle">
             <thead>
               <tr>
                 <th>ID</th>
@@ -15,6 +18,7 @@
                 <th>Position</th>
                 <th>Hire Date</th>
                 <th>On Call Duty</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -25,6 +29,9 @@
                 <td>{{member.position}}</td>
                 <td>{{member.hire_date}}</td>
                 <td>{{member.on_call_duty ? 'Yes' : 'No'}}</td>
+                <td>
+                  <a [routerLink]="['/staff/form', member.id]" class="btn btn-sm btn-outline-primary">Edit</a>
+                </td>
               </tr>
             </tbody>
           </table>

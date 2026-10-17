@@ -1,19 +1,69 @@
 <div class="scene" id="animalsView">
   <article class="content">
 
+    <div class="row mb-4">
+      <div class="col-12">
+        <h1>Add New Animal</h1>
+        <form class="form-horizontal" [formGroup]="addAnimalForm" (ngSubmit)="onAddAnimal()">
+
+          <div class="form-group mb-3">
+            <label for="name" class="form-label">Name:</label>
+            <input id="name" type="text" class="form-control" formControlName="name" placeholder="Animal Name" required>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="age" class="form-label">Age:</label>
+            <input id="age" type="text" class="form-control" formControlName="age" placeholder="e.g. 2 years, 6 months">
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="description" class="form-label">Description:</label>
+            <input id="description" type="text" class="form-control" formControlName="description" placeholder="Short description">
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="medical_id" class="form-label">Medical ID:</label>
+            <input id="medical_id" type="number" class="form-control" formControlName="medical_id" placeholder="0">
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="adoptable" class="form-label">Adoptable?</label>
+            <select id="adoptable" class="form-select" formControlName="adoptable">
+              <option [ngValue]="true">Yes</option>
+              <option [ngValue]="false">No</option>
+            </select>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="current_resident" class="form-label">Current Resident?</label>
+            <select id="current_resident" class="form-select" formControlName="current_resident">
+              <option [ngValue]="true">Yes</option>
+              <option [ngValue]="false">No</option>
+            </select>
+          </div>
+
+          <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary btn-lg" [disabled]="!addAnimalForm.valid">Add Animal</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Filter & Animals List Table -->
     <h1>Animals List</h1>
 
     <div class="row mb-3">
       <div class="col-12">
         <form [formGroup]="animalSearch" class="form-inline">
           <div class="form-group mr-2">
-            <input type="text" class="form-control" formControlName="name" placeholder="Filter by Name">
+            <label for="nameFilter" class="form-label mr-2">Filter:</label>
+            <input id="nameFilter" type="text" class="form-control" formControlName="nameFilter" placeholder="Filter by Name" (input)="filterAnimals()">
           </div>
         </form>
       </div>
     </div>
 
-    <div class="row" *ngIf="animals && animals.length > 0; else noAnimals">
+    <div class="row" *ngIf="filteredAnimals && filteredAnimals.length > 0; else noAnimals">
       <div class="col-12">
         <div class="table-responsive">
           <table class="table table-striped">
@@ -29,7 +79,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let animal of animals">
+              <tr *ngFor="let animal of filteredAnimals">
                 <td><strong>{{animal.id}}</strong></td>
                 <td>{{animal.name}}</td>
                 <td>{{animal.age}}</td>
