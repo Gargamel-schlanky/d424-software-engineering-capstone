@@ -1,0 +1,52 @@
+<div class="scene" id="animalsView">
+  <article class="content">
+
+    <h1>Animals List</h1>
+
+    <div class="row mb-3">
+      <div class="col-12">
+        <form [formGroup]="animalSearch" class="form-inline">
+          <div class="form-group mr-2">
+            <input type="text" class="form-control" formControlName="name" placeholder="Filter by Name">
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="animals && animals.length > 0; else noAnimals">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Description</th>
+                <th>Medical ID</th>
+                <th>Adoptable</th>
+                <th>Current Resident</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let animal of animals">
+                <td><strong>{{animal.id}}</strong></td>
+                <td>{{animal.name}}</td>
+                <td>{{animal.age}}</td>
+                <td>{{animal.description}}</td>
+                <td>{{animal.medical_id}}</td>
+                <td>{{animal.adoptable ? 'Yes' : 'No'}}</td>
+                <td>{{animal.current_resident ? 'Yes' : 'No'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noAnimals>
+      <p class="mt-3 text-muted">No animal records found.</p>
+    </ng-template>
+
+  </article>
+</div>

@@ -1,0 +1,40 @@
+<div class="scene" id="staffView">
+  <article class="content">
+
+    <h1>Staff Directory</h1>
+
+    <div class="row" *ngIf="staffMembers && staffMembers.length > 0; else noStaff">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Position</th>
+                <th>Hire Date</th>
+                <th>On Call Duty</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let member of staffMembers">
+                <td><strong>{{member.id}}</strong></td>
+                <td>{{member.name}}</td>
+                <td>{{member.phone}}</td>
+                <td>{{member.position}}</td>
+                <td>{{member.hire_date}}</td>
+                <td>{{member.on_call_duty ? 'Yes' : 'No'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noStaff>
+      <p class="mt-3 text-muted">No staff records found.</p>
+    </ng-template>
+
+  </article>
+</div>

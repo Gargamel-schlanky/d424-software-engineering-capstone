@@ -1,0 +1,40 @@
+<div class="scene" id="medicalView">
+  <article class="content">
+
+    <h1>Medical Records</h1>
+
+    <div class="row" *ngIf="medicals && medicals.length > 0; else noMedical">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Veterinarian</th>
+                <th>Notes</th>
+                <th>Has Restrictions</th>
+                <th>Last Appointment</th>
+                <th>Next Appointment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let med of medicals">
+                <td><strong>{{med.id}}</strong></td>
+                <td>{{med.vet}}</td>
+                <td>{{med.notes}}</td>
+                <td>{{med.has_restrictions ? 'Yes' : 'No'}}</td>
+                <td>{{med.last_apt}}</td>
+                <td>{{med.next_apt}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noMedical>
+      <p class="mt-3 text-muted">No medical records found.</p>
+    </ng-template>
+
+  </article>
+</div>
