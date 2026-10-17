@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { SearchService } from './services/search.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +11,14 @@ import { SearchService } from './services/search.service';
 export class AppComponent implements OnInit {
   title = 'Fetch! Animal Rescue Helper';
   searchQuery: string = '';
+  isLoggedIn$: Observable<boolean>;
 
-  constructor(private searchService: SearchService) {}
+  constructor(
+    private searchService: SearchService,
+    public authService: AuthService
+  ) {
+    this.isLoggedIn$ = this.authService.isLoggedIn$;
+  }
 
   ngOnInit() {
     this.searchService.searchQuery$.subscribe(query => {
@@ -25,5 +33,9 @@ export class AppComponent implements OnInit {
   clearSearch() {
     this.searchQuery = '';
     this.searchService.clearSearchQuery();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

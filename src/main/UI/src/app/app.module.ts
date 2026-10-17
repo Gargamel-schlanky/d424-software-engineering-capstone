@@ -15,6 +15,7 @@ import { MedicalFormComponent } from './components/medical-form/medical-form.com
 import { StaffComponent } from './components/staff/staff.component';
 import { StaffFormComponent } from './components/staff-form/staff-form.component';
 import { ReportsComponent } from './components/reports/reports.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ReportsComponent } from './components/reports/reports.component';
     MedicalFormComponent,
     StaffComponent,
     StaffFormComponent,
-    ReportsComponent
+    ReportsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

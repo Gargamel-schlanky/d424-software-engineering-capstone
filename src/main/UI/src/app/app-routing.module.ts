@@ -9,22 +9,25 @@ import { MedicalFormComponent } from './components/medical-form/medical-form.com
 import { StaffComponent } from './components/staff/staff.component';
 import { StaffFormComponent } from './components/staff-form/staff-form.component';
 import { ReportsComponent } from './components/reports/reports.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
+  { path: 'login', component: LoginComponent },
   { path: '', redirectTo: 'intake', pathMatch: 'full' },
-  { path: 'intake', component: IntakeComponent },
-  { path: 'intake/form', component: IntakeFormComponent },
-  { path: 'intake/form/:id', component: IntakeFormComponent },
-  { path: 'animals', component: AnimalsComponent },
-  { path: 'animals/form', component: AnimalFormComponent },
-  { path: 'animals/form/:id', component: AnimalFormComponent },
-  { path: 'medical', component: MedicalComponent },
-  { path: 'medical/form', component: MedicalFormComponent },
-  { path: 'medical/form/:id', component: MedicalFormComponent },
-  { path: 'staff', component: StaffComponent },
-  { path: 'staff/form', component: StaffFormComponent },
-  { path: 'staff/form/:id', component: StaffFormComponent },
-  { path: 'reports', component: ReportsComponent },
+  { path: 'intake', component: IntakeComponent, canActivate: [AuthGuard] },
+  { path: 'intake/form', component: IntakeFormComponent, canActivate: [AuthGuard] },
+  { path: 'intake/form/:id', component: IntakeFormComponent, canActivate: [AuthGuard] },
+  { path: 'animals', component: AnimalsComponent, canActivate: [AuthGuard] },
+  { path: 'animals/form', component: AnimalFormComponent, canActivate: [AuthGuard] },
+  { path: 'animals/form/:id', component: AnimalFormComponent, canActivate: [AuthGuard] },
+  { path: 'medical', component: MedicalComponent, canActivate: [AuthGuard] },
+  { path: 'medical/form', component: MedicalFormComponent, canActivate: [AuthGuard] },
+  { path: 'medical/form/:id', component: MedicalFormComponent, canActivate: [AuthGuard] },
+  { path: 'staff', component: StaffComponent, canActivate: [AuthGuard] },
+  { path: 'staff/form', component: StaffFormComponent, canActivate: [AuthGuard] },
+  { path: 'staff/form/:id', component: StaffFormComponent, canActivate: [AuthGuard] },
+  { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'intake' }
 ];
 

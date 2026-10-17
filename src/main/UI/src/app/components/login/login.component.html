@@ -1,0 +1,128 @@
+<div class="scene" id="loginView">
+  <article class="content">
+
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-6 col-lg-5">
+
+        <!-- Error & Success Banners -->
+        <div *ngIf="errorMessage" class="alert alert-danger mb-3" role="alert">
+          {{ errorMessage }}
+        </div>
+        <div *ngIf="successMessage" class="alert alert-success mb-3" role="alert">
+          {{ successMessage }}
+        </div>
+
+        <!-- MODE A: First-Time Setup (No Admin Registered) -->
+        <div *ngIf="!hasAdminAccount" class="card shadow p-4">
+          <div class="card-body">
+            <h2 class="card-title text-center text-primary mb-3">System Initial Setup</h2>
+            <p class="text-muted text-center mb-4">
+              No administrator account registered. Please set up your initial administrator password below.
+            </p>
+
+            <form [formGroup]="registerAdminForm" (ngSubmit)="onRegisterAdmin()">
+
+              <div class="form-group mb-3">
+                <label for="adminUsername" class="form-label font-weight-bold">Admin Username:</label>
+                <input
+                  id="adminUsername"
+                  type="text"
+                  class="form-control bg-light"
+                  formControlName="username"
+                  value="administrator"
+                  readonly
+                >
+                <small class="form-text text-muted">Fixed username: <strong>administrator</strong></small>
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="adminPassword" class="form-label">Set Administrator Password:</label>
+                <input
+                  id="adminPassword"
+                  type="password"
+                  class="form-control"
+                  formControlName="password"
+                  placeholder="Enter new password"
+                  required
+                >
+              </div>
+
+              <div class="form-group mb-4">
+                <label for="confirmPassword" class="form-label">Confirm Password:</label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  class="form-control"
+                  formControlName="confirmPassword"
+                  placeholder="Confirm password"
+                  required
+                >
+              </div>
+
+              <div class="d-grid gap-2">
+                <button
+                  type="submit"
+                  class="btn btn-success btn-lg"
+                  [disabled]="!registerAdminForm.valid"
+                >
+                  Register Administrator Account
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- MODE B: Normal Login Mode (Admin Exists) -->
+        <div *ngIf="hasAdminAccount" class="card shadow p-4">
+          <div class="card-body">
+            <h2 class="card-title text-center text-primary mb-3">Account Login</h2>
+            <p class="text-muted text-center mb-4">
+              Please enter your administrator credentials to access Fetch! Rescue.
+            </p>
+
+            <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+
+              <div class="form-group mb-3">
+                <label for="username" class="form-label">Username:</label>
+                <input
+                  id="username"
+                  type="text"
+                  class="form-control"
+                  formControlName="username"
+                  placeholder="e.g. administrator"
+                  required
+                >
+              </div>
+
+              <div class="form-group mb-4">
+                <label for="password" class="form-label">Password:</label>
+                <input
+                  id="password"
+                  type="password"
+                  class="form-control"
+                  formControlName="password"
+                  placeholder="Enter password"
+                  required
+                >
+              </div>
+
+              <div class="d-grid gap-2">
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-lg"
+                  [disabled]="!loginForm.valid"
+                >
+                  Log In
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </article>
+</div>
