@@ -1,8 +1,10 @@
 package com.D424.capstone.Entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.util.Date;
+
 @Entity
 @Table(name = "medical")
 public class Medical {
@@ -15,8 +17,14 @@ public class Medical {
     private String notes;
     @Column(name = " has_restrictions")
     private Boolean has_restrictions;
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "last_appointment")
     private Date last_apt;
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "next_appointment")
     private Date next_apt;
 

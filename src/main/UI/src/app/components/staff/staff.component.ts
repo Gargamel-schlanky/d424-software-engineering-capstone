@@ -32,6 +32,19 @@ export class StaffComponent implements OnInit {
     );
   }
 
+  onDeleteStaff(id?: number) {
+    if (!id) return;
+    if (confirm('Are you sure you want to delete this staff member?')) {
+      this.httpClient.delete(`${this.getUrl}/${id}`).subscribe(
+        res => {
+          console.log('Staff member deleted', id);
+          this.fetchStaff();
+        },
+        err => console.error('Error deleting staff member', err)
+      );
+    }
+  }
+
   getAll(): Observable<any> {
     return this.httpClient.get(this.getUrl, { responseType: 'json' });
   }

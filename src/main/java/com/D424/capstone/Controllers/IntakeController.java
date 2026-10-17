@@ -22,8 +22,24 @@ public class IntakeController {
         return intakeRepository.findAll();
     }
 
+    @GetMapping("/animal/{id}")
+    public Intake getIntakeById(@PathVariable Long id) {
+        return intakeRepository.findById(id).orElse(null);
+    }
+
     @PostMapping("/animal")
     public Intake createIntake(@RequestBody Intake intake) {
         return intakeRepository.save(intake);
+    }
+
+    @PutMapping("/animal/{id}")
+    public Intake updateIntake(@PathVariable Long id, @RequestBody Intake intake) {
+        intake.setId(id);
+        return intakeRepository.save(intake);
+    }
+
+    @DeleteMapping("/animal/{id}")
+    public void deleteIntake(@PathVariable Long id) {
+        intakeRepository.deleteById(id);
     }
 }

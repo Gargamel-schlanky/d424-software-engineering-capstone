@@ -8,5 +8,6 @@ export interface Animal {
   medical_id?: number;
   adoptable?: boolean;
   current_resident?: boolean;
+  photoUrl?: string;
   intakes?: Intake[];
 }

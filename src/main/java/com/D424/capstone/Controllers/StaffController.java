@@ -37,4 +37,9 @@ public class StaffController {
         staff.setId(id);
         return staffRepository.save(staff);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteStaff(@PathVariable int id) {
+        staffRepository.deleteById(id);
+    }
 }

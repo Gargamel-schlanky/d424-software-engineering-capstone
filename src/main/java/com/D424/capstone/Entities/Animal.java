@@ -1,14 +1,12 @@
 package com.D424.capstone.Entities;
 
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Primary;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "animal")
-
 public class Animal {
 
     @Id
@@ -26,6 +24,10 @@ public class Animal {
     private Boolean adoptable;
     @Column(name = "current_resident")
     private Boolean current_resident;
+
+    @Lob
+    @Column(name = "photo_url", columnDefinition = "TEXT")
+    private String photoUrl;
 
     @OneToMany(mappedBy = "animal")
     private List<Intake> intakes = new ArrayList<>();
@@ -72,7 +74,6 @@ public class Animal {
         this.age = age;
     }
 
-
     public int getMedical_id() {
         return medical_id;
     }
@@ -89,7 +90,6 @@ public class Animal {
         this.description = description;
     }
 
-
     public Boolean getAdoptable() {
         return adoptable;
     }
@@ -104,5 +104,13 @@ public class Animal {
 
     public void setCurrent_resident(Boolean current_resident) {
         this.current_resident = current_resident;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

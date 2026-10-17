@@ -27,10 +27,11 @@
                 <td>{{member.name}}</td>
                 <td>{{member.phone}}</td>
                 <td>{{member.position}}</td>
-                <td>{{member.hire_date}}</td>
+                <td>{{member.hire_date | date:'yyyy-MM-dd'}}</td>
                 <td>{{member.on_call_duty ? 'Yes' : 'No'}}</td>
                 <td>
-                  <a [routerLink]="['/staff/form', member.id]" class="btn btn-sm btn-outline-primary">Edit</a>
+                  <a [routerLink]="['/staff/form', member.id]" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+                  <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDeleteStaff(member.id)">Delete</button>
                 </td>
               </tr>
             </tbody>

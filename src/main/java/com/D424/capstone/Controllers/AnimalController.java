@@ -22,8 +22,24 @@ public class AnimalController {
         return animalRepository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public Animal getAnimalById(@PathVariable Long id) {
+        return animalRepository.findById(id).orElse(null);
+    }
+
     @PostMapping
     public Animal createAnimal(@RequestBody Animal animal) {
         return animalRepository.save(animal);
+    }
+
+    @PutMapping("/{id}")
+    public Animal updateAnimal(@PathVariable Long id, @RequestBody Animal animal) {
+        animal.setId(id);
+        return animalRepository.save(animal);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteAnimal(@PathVariable Long id) {
+        animalRepository.deleteById(id);
     }
 }

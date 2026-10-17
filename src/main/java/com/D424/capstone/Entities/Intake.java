@@ -1,9 +1,9 @@
 package com.D424.capstone.Entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.util.Date;
-
 
 @Entity
 @Table(name = "intake")
@@ -14,6 +14,7 @@ public class Intake {
 
     @Column(name = "intake_date")
     @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date intake_date;
 
     @ManyToOne
@@ -79,5 +80,13 @@ public class Intake {
 
     public void setTYPE(Animal_type TYPE) {
         this.TYPE = TYPE;
+    }
+
+    public Animal getAnimal() {
+        return animal;
+    }
+
+    public void setAnimal(Animal animal) {
+        this.animal = animal;
     }
 }

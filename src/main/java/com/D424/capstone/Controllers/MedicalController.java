@@ -22,8 +22,24 @@ public class MedicalController {
         return medicalRepository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public Medical getMedicalById(@PathVariable int id) {
+        return medicalRepository.findById(id).orElse(null);
+    }
+
     @PostMapping
     public Medical createMedicalRecord(@RequestBody Medical medical) {
         return medicalRepository.save(medical);
+    }
+
+    @PutMapping("/{id}")
+    public Medical updateMedicalRecord(@PathVariable int id, @RequestBody Medical medical) {
+        medical.setId(id);
+        return medicalRepository.save(medical);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteMedicalRecord(@PathVariable int id) {
+        medicalRepository.deleteById(id);
     }
 }
