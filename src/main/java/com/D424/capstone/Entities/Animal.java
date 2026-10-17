@@ -1,5 +1,6 @@
 package com.D424.capstone.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class Animal extends BaseEntity {
     @Column(name = "photo_url", columnDefinition = "TEXT")
     private String photoUrl;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "animal")
     private List<Intake> intakes = new ArrayList<>();
 

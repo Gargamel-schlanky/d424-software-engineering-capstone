@@ -22,6 +22,7 @@ export class IntakeFormComponent implements OnInit {
 
   isEditMode: boolean = false;
   intakeId?: number;
+  selectedPhotoUrl: string = '';
 
   constructor(
     private httpClient: HttpClient,
@@ -35,6 +36,9 @@ export class IntakeFormComponent implements OnInit {
       TYPE: new FormControl(Animal_type.DOG, Validators.required),
       needs_medical: new FormControl(false),
       animal_id: new FormControl(''),
+      new_animal_name: new FormControl(''),
+      new_animal_age: new FormControl(''),
+      new_animal_description: new FormControl(''),
       staff_id: new FormControl('')
     });
 
@@ -82,17 +86,46 @@ export class IntakeFormComponent implements OnInit {
             animal_id: res.animal ? res.animal.id : '',
             staff_id: res.intake_staff_member ? res.intake_staff_member.id : ''
           });
+          if (res.animal && res.animal.photoUrl) {
+            this.selectedPhotoUrl = res.animal.photoUrl;
+          }
         }
       },
       err => console.error('Error loading intake', err)
     );
   }
 
+  onPhotoSelected(event: any) {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.selectedPhotoUrl = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   onSubmit() {
     if (!this.animalIntake.valid) return;
 
     const formVal = this.animalIntake.value;
-    const selectedAnimal = formVal.animal_id ? (this.animals.find(a => a.id == formVal.animal_id) || { id: Number(formVal.animal_id) }) : undefined;
+
+    let targetAnimal: Animal | undefined = undefined;
+
+    if (formVal.animal_id) {
+      targetAnimal = this.animals.find(a => a.id == formVal.animal_id) || { id: Number(formVal.animal_id) };
+    } else if (formVal.new_animal_name && formVal.new_animal_name.trim().length > 0) {
+      targetAnimal = {
+        name: formVal.new_animal_name,
+        age: formVal.new_animal_age,
+        description: formVal.new_animal_description,
+        adoptable: true,
+        current_resident: true,
+        photoUrl: this.selectedPhotoUrl || undefined
+      };
+    }
+
     const selectedStaff = formVal.staff_id ? (this.staffList.find(s => s.id == formVal.staff_id) || { id: Number(formVal.staff_id) }) : undefined;
 
     const intakeData: Intake = {
@@ -100,7 +133,7 @@ export class IntakeFormComponent implements OnInit {
       intake_date: formVal.intake_date,
       needs_medical: formVal.needs_medical === true || formVal.needs_medical === 'true',
       TYPE: formVal.TYPE as Animal_type,
-      animal: selectedAnimal,
+      animal: targetAnimal,
       intake_staff_member: selectedStaff
     };
 
@@ -112,6 +145,7 @@ export class IntakeFormComponent implements OnInit {
       this.httpClient.put<Intake>(`${this.postIntakeUrl}/${this.intakeId}`, intakeData, options).subscribe(
         res => {
           console.log('Intake updated:', res);
+          alert('Intake Insertion & Update Complete!\n\nIntake record successfully updated in the database. Task completed.');
           this.router.navigate(['/intake']);
         },
         err => console.error('Error updating intake', err)
@@ -120,6 +154,7 @@ export class IntakeFormComponent implements OnInit {
       this.httpClient.post<Intake>(this.postIntakeUrl, intakeData, options).subscribe(
         res => {
           console.log('Intake created:', res);
+          alert('Intake Insertion Complete!\n\nNew intake record successfully inserted into the database. Task completed.');
           this.router.navigate(['/intake']);
         },
         err => console.error('Error creating intake', err)

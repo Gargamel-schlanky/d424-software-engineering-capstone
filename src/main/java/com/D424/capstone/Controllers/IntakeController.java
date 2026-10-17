@@ -9,6 +9,7 @@ import com.D424.capstone.Repositories.StaffRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/intake")
@@ -37,16 +38,39 @@ public class IntakeController {
 
     @PostMapping("/animal")
     public Intake createIntake(@RequestBody Intake intake) {
-        if (intake.getAnimal() != null && intake.getAnimal().getId() != null) {
-            Animal resolvedAnimal = animalRepository.findById(intake.getAnimal().getId()).orElse(intake.getAnimal());
-            intake.setAnimal(resolvedAnimal);
+        if (intake.getAnimal() != null) {
+            Animal animal = intake.getAnimal();
+            if (animal.getId() != null && animal.getId() > 0) {
+                Optional<Animal> existingAnimal = animalRepository.findById(animal.getId());
+                if (existingAnimal.isPresent()) {
+                    intake.setAnimal(existingAnimal.get());
+                } else if (animal.getName() != null && !animal.getName().trim().isEmpty()) {
+                    animal.setId(null);
+                    if (animal.getAdoptable() == null) animal.setAdoptable(true);
+                    if (animal.getCurrent_resident() == null) animal.setCurrent_resident(true);
+                    intake.setAnimal(animalRepository.save(animal));
+                } else {
+                    intake.setAnimal(null);
+                }
+            } else if (animal.getName() != null && !animal.getName().trim().isEmpty()) {
+                animal.setId(null);
+                if (animal.getAdoptable() == null) animal.setAdoptable(true);
+                if (animal.getCurrent_resident() == null) animal.setCurrent_resident(true);
+                intake.setAnimal(animalRepository.save(animal));
+            } else {
+                intake.setAnimal(null);
+            }
         } else {
             intake.setAnimal(null);
         }
 
         if (intake.getIntake_staff_member() != null && intake.getIntake_staff_member().getId() != 0) {
-            Staff resolvedStaff = staffRepository.findById(intake.getIntake_staff_member().getId()).orElse(intake.getIntake_staff_member());
-            intake.setIntake_staff_member(resolvedStaff);
+            Optional<Staff> existingStaff = staffRepository.findById(intake.getIntake_staff_member().getId());
+            if (existingStaff.isPresent()) {
+                intake.setIntake_staff_member(existingStaff.get());
+            } else {
+                intake.setIntake_staff_member(null);
+            }
         } else {
             intake.setIntake_staff_member(null);
         }
@@ -58,16 +82,39 @@ public class IntakeController {
     public Intake updateIntake(@PathVariable Long id, @RequestBody Intake intake) {
         intake.setId(id);
 
-        if (intake.getAnimal() != null && intake.getAnimal().getId() != null) {
-            Animal resolvedAnimal = animalRepository.findById(intake.getAnimal().getId()).orElse(intake.getAnimal());
-            intake.setAnimal(resolvedAnimal);
+        if (intake.getAnimal() != null) {
+            Animal animal = intake.getAnimal();
+            if (animal.getId() != null && animal.getId() > 0) {
+                Optional<Animal> existingAnimal = animalRepository.findById(animal.getId());
+                if (existingAnimal.isPresent()) {
+                    intake.setAnimal(existingAnimal.get());
+                } else if (animal.getName() != null && !animal.getName().trim().isEmpty()) {
+                    animal.setId(null);
+                    if (animal.getAdoptable() == null) animal.setAdoptable(true);
+                    if (animal.getCurrent_resident() == null) animal.setCurrent_resident(true);
+                    intake.setAnimal(animalRepository.save(animal));
+                } else {
+                    intake.setAnimal(null);
+                }
+            } else if (animal.getName() != null && !animal.getName().trim().isEmpty()) {
+                animal.setId(null);
+                if (animal.getAdoptable() == null) animal.setAdoptable(true);
+                if (animal.getCurrent_resident() == null) animal.setCurrent_resident(true);
+                intake.setAnimal(animalRepository.save(animal));
+            } else {
+                intake.setAnimal(null);
+            }
         } else {
             intake.setAnimal(null);
         }
 
         if (intake.getIntake_staff_member() != null && intake.getIntake_staff_member().getId() != 0) {
-            Staff resolvedStaff = staffRepository.findById(intake.getIntake_staff_member().getId()).orElse(intake.getIntake_staff_member());
-            intake.setIntake_staff_member(resolvedStaff);
+            Optional<Staff> existingStaff = staffRepository.findById(intake.getIntake_staff_member().getId());
+            if (existingStaff.isPresent()) {
+                intake.setIntake_staff_member(existingStaff.get());
+            } else {
+                intake.setIntake_staff_member(null);
+            }
         } else {
             intake.setIntake_staff_member(null);
         }
