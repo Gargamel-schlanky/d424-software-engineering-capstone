@@ -13,40 +13,34 @@
       <div class="navbar d-flex justify-content-between align-items-center flex-wrap">
         <div class="brand"><a routerLink="/intake"><span>Fetch! Rescue</span></a></div>
 
-        <ng-container *ngIf="isLoggedIn$ | async">
-          <ul class="nav">
-            <li><a routerLink="/intake" routerLinkActive="active">Intakes</a></li>
-            <li><a routerLink="/animals" routerLinkActive="active">Animals</a></li>
-            <li><a routerLink="/medical" routerLinkActive="active">Medical</a></li>
-            <li><a routerLink="/staff" routerLinkActive="active">Staff</a></li>
-            <li><a routerLink="/reports" routerLinkActive="active">Reports</a></li>
-          </ul>
+        <ul class="nav">
+          <li><a routerLink="/intake" routerLinkActive="active">Intakes</a></li>
+          <li><a routerLink="/animals" routerLinkActive="active">Animals</a></li>
+          <li><a routerLink="/medical" routerLinkActive="active">Medical</a></li>
+          <li><a routerLink="/staff" routerLinkActive="active">Staff</a></li>
+          <li><a routerLink="/reports" routerLinkActive="active">Reports</a></li>
+        </ul>
 
-          <!-- Page-wide Search Bar -->
-          <div class="header-search-container my-2 me-3 position-relative" style="min-width: 200px; max-width: 300px;">
-            <div class="input-group input-group-sm">
-              <span class="input-group-text bg-white border-end-0">🔍</span>
-              <input
-                type="text"
-                class="form-control border-start-0 ps-0"
-                placeholder="Search page..."
-                [value]="searchQuery"
-                (input)="onSearchChange($any($event.target).value)"
-              >
-              <button
-                *ngIf="searchQuery"
-                type="button"
-                class="btn btn-outline-secondary border-start-0"
-                (click)="clearSearch()"
-                title="Clear Search"
-              >✕</button>
-            </div>
+        <!-- Page-wide Search Bar -->
+        <div class="header-search-container my-2 me-3 position-relative" style="min-width: 200px; max-width: 300px;">
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-white border-end-0">🔍</span>
+            <input
+              type="text"
+              class="form-control border-start-0 ps-0"
+              placeholder="Search page..."
+              [value]="searchQuery"
+              (input)="onSearchChange($any($event.target).value)"
+            >
+            <button
+              *ngIf="searchQuery"
+              type="button"
+              class="btn btn-outline-secondary border-start-0"
+              (click)="clearSearch()"
+              title="Clear Search"
+            >✕</button>
           </div>
-
-          <div class="me-3">
-            <button class="btn btn-outline-light btn-sm ms-2" (click)="logout()">Logout</button>
-          </div>
-        </ng-container>
+        </div>
 
       </div><!-- navbar -->
     </nav>

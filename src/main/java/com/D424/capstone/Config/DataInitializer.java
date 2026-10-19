@@ -16,16 +16,9 @@ public class DataInitializer {
             AnimalRepository animalRepository,
             StaffRepository staffRepository,
             MedicalRepository medicalRepository,
-            IntakeRepository intakeRepository,
-            UserRepository userRepository
+            IntakeRepository intakeRepository
     ) {
         return args -> {
-            // Seed Admin User if none exists
-            if (!userRepository.existsByUsername("administrator")) {
-                User admin = new User("administrator", "admin123", "ADMIN");
-                userRepository.save(admin);
-            }
-
             // Seed Sample Animals if table is empty
             if (animalRepository.count() == 0) {
                 Animal dog = new Animal();

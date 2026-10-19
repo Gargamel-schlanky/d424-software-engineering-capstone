@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  capstone-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: capstone-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:sqlite:/app/db/my_db.db
+    volumes:
+      - sqlite_data:/app/db
+    restart: unless-stopped
+
+volumes:
+  sqlite_data:

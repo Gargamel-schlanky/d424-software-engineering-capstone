@@ -1,29 +1,230 @@
-<strong>**DO NOT DISTRIBUTE OR PUBLICLY POST SOLUTIONS TO THESE LABS. MAKE ALL FORKS OF THIS REPOSITORY WITH SOLUTION CODE PRIVATE. PLEASE REFER TO THE STUDENT CODE OF CONDUCT AND ETHICAL EXPECTATIONS FOR COLLEGE OF INFORMATION TECHNOLOGY STUDENTS FOR SPECIFICS. **</strong>
-
 # WESTERN GOVERNORS UNIVERSITY 
 ## D424 – SOFTWARE ENGINEERING CAPSTONE
-Welcome to Software Engineering Capstone! This is an opportunity for students to develop full stack software engineering documentation and applications. They will execute documentation, unit testing, revision of software applications, and deploy software applications with scripts and containers on a cloud platform.
+### Fetch! Animal Rescue Helper — Full Stack Documentation & Testing Guide
 
-FOR SPECIFIC TASK INSTRUCTIONS AND REQUIREMENTS FOR THIS ASSESSMENT, PLEASE REFER TO THE COURSE PAGE.
-BASIC INSTRUCTIONS
-For this assessment, you will deploy your developed full stack software product to a web service of your choice.
+---
+
+## 1. AZURE DEPLOYMENT:
+This web application is deployed through Azure web services and can be accessed through 
+the following link:
 
 
-## SUPPLEMENTAL RESOURCES  
-1.	How to clone a project to IntelliJ using Git?
+*Other access methods can be found below in section 4: GITLAB REPOSITORY & DOCKER CONTAINER ACCESS*
+---
 
-> Ensure that you have Git installed on your system and that IntelliJ is installed using [Toolbox](https://www.jetbrains.com/toolbox-app/). Make sure that you are using version 2022.3.2. Once this has been confirmed, click the clone button and use the 'IntelliJ IDEA (HTTPS)' button. This will open IntelliJ with a prompt to clone the proejct. Save it in a safe location for the directory and press clone. IntelliJ will prompt you for your credentials. Enter in your WGU Credentials and the project will be cloned onto your local machine.  
+## 2. UML CLASS DIAGRAM & SEQUENCE DIAGRAM
 
-2. How to create a branch and start Development?
+### UML Class Diagram (PlantUML)
 
-- GitLab method
-> Press the '+' button located near your branch name. In the dropdown list, press the 'New branch' button. This will allow you to create a name for your branch. Once the branch has been named, you can select 'Create Branch' to push the branch to your repository.
+```plantuml
+@startuml
+abstract class BaseEntity {
+    # String createdBy
+    + getCreatedBy(): String
+    + setCreatedBy(createdBy: String): void
+    + getDisplaySummary(): String
+}
 
-- IntelliJ method
-> In IntelliJ, Go to the 'Git' button on the top toolbar. Select the new branch option and create a name for the branch. Make sure checkout branch is selected and press create. You can now add a commit message and push the new branch to the local repo.
+class Animal {
+    - Long id
+    - String name
+    - String age
+    - String description
+    - int medical_id
+    - Boolean adoptable
+    - Boolean current_resident
+    - String photoUrl
+    - List<Intake> intakes
+    + getDisplaySummary(): String
+}
 
-## SUPPORT
-If you need additional support, please navigate to the course page and reach out to your course instructor.
+enum Animal_type {
+    DOG
+    CAT
+    OTHER
+    WILD_REHAB
+    UNKNOWN
+}
 
-## FUTURE USE
-Take this opportunity to create or add to a simple resume portfolio to highlight and showcase your work for future use in career search, experience, and education!
+class Intake {
+    - Long id
+    - Date intake_date
+    - Staff intake_staff_member
+    - Boolean needs_medical
+    + Animal_type TYPE
+    - Animal animal
+    + getDisplaySummary(): String
+}
+
+class Medical {
+    - int id
+    - String vet
+    - String notes
+    - Boolean has_restrictions
+    - Date last_apt
+    - Date next_apt
+    + getDisplaySummary(): String
+}
+
+class Staff {
+    - int id
+    - String name
+    - String phone
+    - String position
+    - Date hire_date
+    - Boolean on_call_duty
+    + getDisplaySummary(): String
+}
+
+BaseEntity <|-- Animal
+BaseEntity <|-- Intake
+BaseEntity <|-- Medical
+BaseEntity <|-- Staff
+
+Intake "0..*" --> "0..1" Animal : animal
+Intake "0..*" --> "0..1" Staff : intake_staff_member
+Intake --> Animal_type : TYPE
+@enduml
+```
+
+### Sequence Diagram (New Animal Intake Flow)
+
+```
+User (Browser)          Angular Frontend (SPA)         Spring Boot REST Controller       SQLite Database
+   |                              |                                |                            |
+   |--- Fill Intake Form -------->|                                |                            |
+   |    (Date, Animal, Staff)     |                                |                            |
+   |                              |                                |                            |
+   |--- Click Submit ----------->|                                |                            |
+   |                              |--- POST /intake/animal ------->|                            |
+   |                              |    (JSON Payload)              |                            |
+   |                              |                                |--- Save Animal (if new) -->|
+   |                              |                                |--- Save Intake ---------->|
+   |                              |                                |<-- Intake Persisted ------|
+   |                              |<-- HTTP 200 OK (Saved Intake) -|                            |
+   |<-- Confirmation Pop-up ------|                                |                            |
+   |    "Task Completed"          |                                |                            |
+   |                              |                                |                            |
+   |--- Acknowledge Pop-up ------>|                                |                            |
+   |                              |--- Redirect /intake ---------->|                            |
+   |                              |--- GET /intake/animal -------->|                            |
+   |                              |<-- List<Intake> JSON ---------|                            |
+   |<-- Render Updated Table -----|                                |                            |
+```
+
+---
+
+## 3. WEB APP HOSTING & HTML CODE
+
+- **GitLab Repository Link:**
+  `https://gitlab.com/wgu-gitlab-environment/student-repos/tcrote3/d424-software-engineering-capstone.git`
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fetch! Animal Rescue Helper</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
+```
+
+---
+
+## 4. GITLAB REPOSITORY & DOCKER CONTAINER ACCESS
+
+- **GitLab Repository URL**: `https://gitlab.com/wgu-gitlab-environment/student-repos/tcrote3/d424-software-engineering-capstone.git`
+- **Submission Tag Version**: `v1.0.0-FINAL`
+- **Branch**: `working_branch_non`
+
+- **Docker Image Access**:
+  - Pull Docker image: `docker pull tcrote3/d424_capstone:latest`
+  - Run container: `docker run -d -p 8080:8080 tcrote3/d424_capstone:latest`
+  - Access web app: `http://localhost:8080`
+
+---
+
+## 5. TECHNICAL DOCUMENTATION FOR UPDATING CODE
+
+### System Architecture
+The application follows a 3-tier decoupled architecture:
+1. **Frontend**: Angular 13+ SPA utilizing Reactive Forms, Bootstrap 5, RxJS, and Hash Location Strategy.
+2. **Backend**: Spring Boot 3.2.5 REST API with Java 17, Spring Data JPA, and custom security filter.
+3. **Database**: Embedded SQLite database (`jdbc:sqlite:my_db`) with Hibernate 6 ORM dialect (`org.hibernate.community.dialect.SQLiteDialect`).
+
+### Code Maintenance Guidelines
+- **Adding a New Entity**:
+  1. Extend `BaseEntity` in `src/main/java/com/D424/capstone/Entities/`.
+  2. Create a repository interface extending `JpaRepository` in `Repositories/`.
+  3. Create a REST Controller with `@CrossOrigin` and CRUD mappings (`GET`, `POST`, `PUT`, `DELETE`) in `Controllers/`.
+  4. Create matching TypeScript interfaces in `src/main/UI/src/app/models/`.
+  5. Create list and separate form components under `src/main/UI/src/app/components/`.
+
+---
+
+## 6. USER GUIDE FOR RUNNING THE APPLICATION
+
+### Launching the Application
+1. Open the application in your browser (`http://localhost:8080`).
+2. The application loads directly on the **Intakes** landing screen.
+
+### Navigating the System
+The header navbar provides direct access to all main modules:
+- **Intakes**: View and create animal intake records.
+- **Animals**: View, filter, and add resident animals.
+- **Medical**: Track veterinarian visits, appointments, and care restrictions.
+- **Staff**: Manage staff directory and on-call duty status.
+- **Reports**: View summary analytics, export CSV reports, and print documentation.
+- **Header Search Bar**: Type any keyword into the top `🔍 Search page...` bar to filter table records in real time.
+
+### Managing Animal Intakes
+1. Navigate to **Intakes** and click **+ New Animal Intake**.
+2. Select the **Intake Date**, **Animal Type**, and whether medical care is needed.
+3. Choose an existing animal OR fill in the **Create & Populate New Animal Record** section (Name, Age, Description, and Photo Upload).
+4. Optionally select an intake staff member.
+5. Click **Submit Intake Record**.
+6. A confirmation pop-up will display: *"Intake Insertion Complete! New intake record successfully inserted into the database. Task completed."*
+7. Click **OK** to return to the Intake Records landing table.
+
+---
+
+## 7. SOFTWARE TESTING & UNIT TEST PLAN
+
+### A. Test Plan Overview
+- **Testing Framework**: JUnit 5 + Spring Boot Test + Maven Surefire Plugin.
+- **Scope**:
+  1. **Spring Application Context Bootstrapping**: Verify `CapstoneApplication` loads persistence units, embedded web server, and Spring Data JPA repositories.
+  2. **Domain Entity Encapsulation**: Verify private field accessors, getters, setters, and constructors.
+  3. **Inheritance & Polymorphism**: Verify subclasses (`Animal`, `Intake`, `Medical`, `Staff`) correctly inherit from `BaseEntity` and override `getDisplaySummary()`.
+
+### B. Unit Test Execution Results Summary
+
+| Test Case ID | Test Class | Test Method | Objective / Description | Status |
+| :--- | :--- | :--- | :--- | :---: |
+| **TC-001** | `CapstoneApplicationTests` | `contextLoads()` | Verify Spring Boot context initializes persistence and web server cleanly. | **PASS** |
+| **TC-002** | `AnimalEntityTest` | `testAnimalEncapsulation()` | Verify getters/setters for animal attributes, photo URL, and adoptability. | **PASS** |
+| **TC-003** | `AnimalEntityTest` | `testAnimalPolymorphism()` | Verify method overriding of `getDisplaySummary()` on `BaseEntity`. | **PASS** |
+| **TC-004** | `IntakeEntityTest` | `testIntakeEncapsulation()` | Verify relationship linking between `Intake`, `Animal`, and `Staff`. | **PASS** |
+| **TC-005** | `IntakeEntityTest` | `testIntakePolymorphism()` | Verify polymorphism and string formatting on `Intake.getDisplaySummary()`. | **PASS** |
+| **TC-006** | `MedicalEntityTest` | `testMedicalEntity()` | Verify medical provider notes, restrictions, and appointment date accessors. | **PASS** |
+| **TC-007** | `StaffEntityTest` | `testStaffEntity()` | Verify staff member properties, position, and on-call duty status. | **PASS** |
+
+**Summary**: 7 Total Tests Executed | **7 Passed** | **0 Failed** | **0 Skipped**
+
+### C. Summaries of Changes Resulting from Completed Tests
+1. **Jackson Infinite Recursion Cycle Fix**:
+   - *Test Findings*: During integration testing of `Animal` and `Intake` REST endpoints, Jackson JSON serializer encountered a `StackOverflowError` due to bi-directional `@OneToMany` / `@ManyToOne` circular references between `Animal.intakes` and `Intake.animal`.
+   - *Change Implemented*: Applied `@JsonIgnore` to `private List<Intake> intakes` in `Animal.java`, breaking the infinite recursion loop.
+2. **Optional Animal Foreign Key Constraints**:
+   - *Test Findings*: Inserting an intake without selecting an existing animal threw a `PropertyValueException` due to `@JoinColumn(nullable = false)`.
+   - *Change Implemented*: Updated `@JoinColumn(name = "animal_id", nullable = true)` on `Intake.java` and modified `IntakeController.java` to safely handle optional animal references.
+3. **Date Formatting Consistency**:
+   - *Test Findings*: Date attributes serialized to JSON with timestamp/timezone offsets (`2026-10-18T00:00:00.000+00:00`).
+   - *Change Implemented*: Added `@Temporal(TemporalType.DATE)` and `@JsonFormat(pattern = "yyyy-MM-dd")` annotations to date fields on `Medical.java` and `Intake.java`.

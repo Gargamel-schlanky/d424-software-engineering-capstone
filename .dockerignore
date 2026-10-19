@@ -1,0 +1,9 @@
+.git
+.gitignore
+.idea
+*.iml
+target/
+src/main/UI/node_modules/
+src/main/UI/dist/
+my_db
+*.db
