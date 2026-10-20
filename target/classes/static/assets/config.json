@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "name": "Buddy",
+  "age": "2 years",
+  "description": "Friendly shelter dog",
+  "medical_id": 101,
+  "adoptable": true,
+  "current_resident": true
+}

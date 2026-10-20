@@ -7,7 +7,7 @@
 ## 1. AZURE DEPLOYMENT:
 This web application is deployed through Azure web services and can be accessed through 
 the following link:
-
+https://fetchanimal.azurewebsites.net/
 
 *Other access methods can be found below in section 4: GITLAB REPOSITORY & DOCKER CONTAINER ACCESS*
 ---
