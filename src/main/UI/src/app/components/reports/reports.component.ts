@@ -9,7 +9,7 @@ import { Animal, Intake, Medical, Staff } from '../../models';
 })
 export class ReportsComponent implements OnInit {
 
-  private baseURL: string = 'http://localhost:8080';
+  private baseURL: string = '';
 
   intakes: Intake[] = [];
   animals: Animal[] = [];

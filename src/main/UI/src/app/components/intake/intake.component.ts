@@ -11,7 +11,7 @@ import { SearchService } from '../../services/search.service';
 })
 export class IntakeComponent implements OnInit, OnDestroy {
 
-  private baseURL: string = 'http://localhost:8080';
+  private baseURL: string = '';
   private getIntakesUrl: string = this.baseURL + '/intake/animal';
 
   intakes: Intake[] = [];

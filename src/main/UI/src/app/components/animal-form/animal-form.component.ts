@@ -11,7 +11,7 @@ import { Animal } from '../../models';
 })
 export class AnimalFormComponent implements OnInit {
 
-  private baseURL: string = 'http://localhost:8080';
+  private baseURL: string = '';
   private animalsUrl: string = this.baseURL + '/animals';
 
   addAnimalForm!: FormGroup;

@@ -11,7 +11,7 @@ import { SearchService } from '../../services/search.service';
 })
 export class StaffComponent implements OnInit, OnDestroy {
 
-  private baseURL: string = 'http://localhost:8080';
+  private baseURL: string = '';
   private getUrl: string = this.baseURL + '/staff';
 
   staffMembers: Staff[] = [];

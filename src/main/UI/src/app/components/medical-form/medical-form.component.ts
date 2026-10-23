@@ -11,7 +11,7 @@ import { Medical } from '../../models';
 })
 export class MedicalFormComponent implements OnInit {
 
-  private baseURL: string = 'http://localhost:8080';
+  private baseURL: string = '';
   private medicalUrl: string = this.baseURL + '/medical';
 
   addMedicalForm!: FormGroup;

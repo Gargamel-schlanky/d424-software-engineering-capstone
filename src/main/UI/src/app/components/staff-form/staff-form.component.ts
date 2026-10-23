@@ -11,7 +11,7 @@ import { Staff } from '../../models';
 })
 export class StaffFormComponent implements OnInit {
 
-  private baseURL: string = 'http://localhost:8080';
+  private baseURL: string = '';
   private staffUrl: string = this.baseURL + '/staff';
 
   staffForm!: FormGroup;

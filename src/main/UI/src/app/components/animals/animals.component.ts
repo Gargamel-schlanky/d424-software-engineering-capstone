@@ -11,7 +11,7 @@ import { SearchService } from '../../services/search.service';
 })
 export class AnimalsComponent implements OnInit, OnDestroy {
 
-  private baseURL: string = 'http://localhost:8080';
+  private baseURL: string = '';
   private animalsUrl: string = this.baseURL + '/animals';
 
   animals: Animal[] = [];

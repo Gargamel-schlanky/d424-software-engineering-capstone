@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  private baseURL: string = 'http://localhost:8080/auth';
+  private baseURL: string = '/auth';
   private loggedInSubject = new BehaviorSubject<boolean>(this.checkLocalSession());
   public isLoggedIn$: Observable<boolean> = this.loggedInSubject.asObservable();
 

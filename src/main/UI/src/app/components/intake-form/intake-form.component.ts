@@ -11,7 +11,7 @@ import { Animal, Animal_type, Intake, Staff } from '../../models';
 })
 export class IntakeFormComponent implements OnInit {
 
-  private baseURL: string = 'http://localhost:8080';
+  private baseURL: string = '';
   private postIntakeUrl: string = this.baseURL + '/intake/animal';
   private getAnimalsUrl: string = this.baseURL + '/animals';
   private getStaffUrl: string = this.baseURL + '/staff';
