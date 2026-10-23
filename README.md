@@ -4,10 +4,10 @@
 
 ---
 
-## 1. AZURE DEPLOYMENT:
-This web application is deployed through Azure web services and can be accessed through 
-the following link:
-https://fetchanimal.azurewebsites.net/
+## 1. DEPLOYMENT:
+This web application is deployed and available through the following link:
+
+https://d424-software-engineering-capstone-4zz8.onrender.com
 
 *Other access methods can be found below in section 4: GITLAB REPOSITORY & DOCKER CONTAINER ACCESS*
 ---
